@@ -4,6 +4,7 @@ A Python script that extracts committee meetings information from UK Parliament'
 - Week's meetings
 - Meetings within a date range
 Gathered data are exported in csv and json format.
+There's an [alternative version](https://github.com/kkoutoup/Tkinter-extract-meetings-information) of this script that uses a tkinter gui.
 
 ## Category
 API/data collection
