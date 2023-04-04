@@ -19,9 +19,9 @@ def get_user_input():
         # exit application on relevant user input otherwise check and return user_input
         if user_input.lower() == 'out':
             sys.exit()
-        elif user_input in accepted_values:
+        if user_input in accepted_values:
             return user_input
-        elif date_match:
+        if date_match:
             return date_match.group()
 
 def translate_user_input():
