@@ -8,7 +8,7 @@ import logging, json, csv
 
 # local modules
 from helper_functions import extract_activity_types, extract_activity_titles, extract_activities_times, format_activity_times
-from user_input import get_user_input, translate_user_input
+from user_input import translate_user_input
 
 def main():
     # set up logging
@@ -16,7 +16,6 @@ def main():
 
     def build_request_url():
         user_input = translate_user_input()
-        print(user_input)
         # api endpoint example: 'https://committees-api.parliament.uk/api/Broadcast/Meetings?FromDate=2023-03-13&ToDate=2023-03-19' \
         # store to log file
         api_endpoint = f"https://committees-api.parliament.uk/api/Broadcast/Meetings?FromDate={user_input.split('/')[0]}&ToDate={user_input.split('/')[1]}"
@@ -25,10 +24,10 @@ def main():
     
     def make_request():
         url = build_request_url()
-        print("=> Getting meetings information")
         try:
             with urllib.request.urlopen(url) as response:
                 logging.info(f"Response code: {response.getcode()}")
+                print("=> Getting meetings information")
                 return response.read().decode('cp1252') # resolve encoding issues => 'charmap' codec can't encode character '\u0175'
         except urllib.error.HTTPError as http_error:
             logging.info(f"Something went wrong when fetching the data: {http_error} - {http_error.code}")
@@ -39,10 +38,14 @@ def main():
 
     def write_to_json_file():
         api_response = make_request()
+        if len(api_response) <= 2: # if no results are returned from the api exit the application. empty response is []
+            logging.info("No data found for this time span. Exiting application.")
+            print("No data found for this time span. Exiting application.")
+            exit()
         print("=> Writing to file")
         try:
             with open('meetings_data.json', 'w', encoding='utf-8') as output_file:
-                json.dump(json.loads(api_response), output_file, indent=4) # json loads to get rid of "\" in response
+                json.dump(json.loads(api_response), output_file, indent=4) # json loads to get rid of "\" in response body
         except Exception as e:
             logging.info("Problems writing to file: {e}")
         
