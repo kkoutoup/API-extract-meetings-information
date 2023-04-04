@@ -38,7 +38,7 @@ def main():
 
     def write_to_json_file():
         api_response = make_request()
-        if len(api_response) <= 2: # if no results are returned from the api exit the application. empty response is []
+        if len(api_response) <= 2: # if api returns empty response (i.e. code '200' but response is []) then notify the user and exit the application
             logging.info("No data found for this time span. Exiting application.")
             print("No data found for this time span. Exiting application.")
             exit()

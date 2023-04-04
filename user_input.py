@@ -27,7 +27,6 @@ def get_user_input():
 def translate_user_input():
     # possible scenarios: 'today', 'week', date range
     user_input = get_user_input()
-    # today
     if user_input == 'today':
         todays_date = date.today()
         time.sleep(1) # in some cases 'today' was returning 'None'. Pausing script to avoid that.
