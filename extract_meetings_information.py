@@ -5,6 +5,7 @@ from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
 from datetime import datetime, date, timedelta
 import logging, json, csv
+import os
 
 # local modules
 from helper_functions import extract_activity_types, extract_activity_titles, extract_activities_times, format_activity_times
@@ -39,8 +40,9 @@ def main():
     def write_to_json_file():
         api_response = make_request()
         if len(api_response) <= 2: # if api returns empty response (i.e. code '200' but response is []) then notify the user and exit the application
-            logging.info("No data found for this time span. Exiting application.")
-            print("No data found for this time span. Exiting application.")
+            logging.info("=> No data found for this time span. Exiting application.")
+            print("=> No data found for this time span. Exiting application.")
+            os.system("pause") # let use see message before closing the terminal window
             exit()
         print("=> Writing to file")
         try:
